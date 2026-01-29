@@ -83,6 +83,17 @@ body {
   justify-content: center;
 }
 
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  width: 100%;
+}
+
 .main-all {
   width: 100%;
   max-width: 115.7rem;
@@ -104,7 +115,7 @@ body {
   margin-bottom: var(--spacing-800);
 }
 
-.header-title-container {
+.header-subject-container {
   display: flex;
   align-items: center;
   gap: var(--spacing-300);
@@ -165,9 +176,6 @@ body {
 }
 /* --- TOGGLE MECHANISM --- */
 
-.hidden {
-  display: none;
-}
 /******************************************/
 /* --- START PAGE --- */
 /******************************************/
@@ -204,13 +212,14 @@ body {
   gap: var(--spacing-200);
 }
 
-.subject-option-container {
+.subject-option-button {
   width: 100%;
   background-color: var(--white);
   border: 0.3rem solid transparent;
   border-radius: 2.4rem;
-  cursor: pointer;
-  transition: border-color 0.3s ease, background-color 0.3s ease;
+  transition:
+    border-color 0.3s ease,
+    background-color 0.3s ease;
   padding: var(--spacing-300);
 
   display: flex;
@@ -248,11 +257,11 @@ body {
   background-color: var(--purple-100);
 }
 
-.subject-option-container:hover {
+.subject-option-button:hover {
   border: 0.3rem solid var(--purple-600);
 }
 
-.subject-option-container.selected {
+.subject-option-button.selected {
   border: 0.3rem solid var(--purple-600);
 }
 
@@ -277,7 +286,7 @@ body {
   margin-bottom: var(--spacing-300);
 }
 
-.question {
+.question-text {
   font: var(--tp-3);
   margin-bottom: 10rem;
 }
@@ -312,27 +321,27 @@ body {
 
 .answer-options-container.disabled {
   pointer-events: none;
-  opacity: 0.9;
+  cursor: not-allowed;
 }
 
-.answer-option-container,
+.answer-option-button,
 .submit-button,
 .play-again-button {
   width: 100%;
   background-color: var(--white);
   border: 0.3rem solid transparent;
   border-radius: 2.4rem;
-  cursor: pointer;
   transition: all 0.3s ease;
   padding: var(--spacing-300);
 }
 
-.answer-option-container {
+.answer-option-button {
   display: grid;
   grid-template-columns: auto 1fr 4rem;
   align-items: center;
   gap: var(--spacing-200);
   min-height: 7.2rem;
+  text-align: left;
 }
 
 .answer-option {
@@ -348,40 +357,40 @@ body {
   flex-shrink: 0;
 }
 
-.answer-option-container:hover,
-.answer-option-container.active {
+.answer-option-button:hover,
+.answer-option-button.selected {
   border: 0.3rem solid var(--purple-600);
 }
 
-.answer-option-container:hover .answer-option,
-.answer-option-container.active .answer-option {
+.answer-option-button:hover .answer-option,
+.answer-option-button.selected .answer-option {
   background-color: var(--purple-600);
   color: var(--white);
 }
 
-.answer-option-container.correct {
+.answer-option-button.correct {
   border: 0.3rem solid var(--green-500);
 }
 
-.answer-option-container.correct .answer-option {
+.answer-option-button.correct .answer-option {
   background-color: var(--green-500);
   color: var(--white);
 }
 
-.answer-option-container.incorrect {
+.answer-option-button.incorrect {
   border: 0.3rem solid var(--red-500);
 }
 
-.answer-option-container.incorrect .answer-option {
+.answer-option-button.incorrect .answer-option {
   background-color: var(--red-500);
   color: var(--white);
 }
 
-.answer-option-container.show-correct .correct-icon {
+.answer-option-button.show-correct .correct-icon {
   display: block;
 }
 
-.answer {
+.answer-text {
   font-size: 2.2rem;
   line-height: 1.2;
 }
@@ -393,11 +402,11 @@ body {
   display: none;
 }
 
-.answer-option-container.correct .correct-icon {
+.answer-option-button.correct .correct-icon {
   display: block;
 }
 
-.answer-option-container.incorrect .incorrect-icon {
+.answer-option-button.incorrect .incorrect-icon {
   display: block;
 }
 /* --- ICON MECHANIC --- */
@@ -487,7 +496,7 @@ body {
   justify-content: center;
 }
 
-.score {
+.score-text {
   font: var(--tp-1);
   text-align: center;
 }
@@ -507,8 +516,8 @@ body.dark-mode {
   background-image: url("images/pattern-background-desktop-dark.svg");
 }
 
-body.dark-mode .subject-option-container,
-body.dark-mode .answer-option-container,
+body.dark-mode .subject-option-button,
+body.dark-mode .answer-option-button,
 body.dark-mode .score-card-container,
 body.dark-mode .progress-container {
   background-color: var(--blue-850);
@@ -533,6 +542,28 @@ body.dark-mode .score-total {
 body.dark-mode .toggle-img {
   filter: brightness(0) invert(1);
 }
+
+/* --- EXTRA CLASSES --- */
+.bg-html {
+  background-color: var(--orange-50);
+}
+
+.bg-css {
+  background-color: var(--green-100);
+}
+
+.bg-javascript {
+  background-color: var(--blue-50);
+}
+
+.bg-accessibility {
+  background-color: var(--purple-100);
+}
+
+.hidden {
+  display: none;
+}
+/* --- EXTRA CLASSES --- */
 
 /* rem and em do NOT depend on html font-size in media queries! Instead, 1rem = 1em = 16px */
 /* Tablet = 768px = 48em */
@@ -586,7 +617,7 @@ body.dark-mode .toggle-img {
     font-style: italic;
   }
 
-  .question {
+  .question-text {
     margin-bottom: var(--spacing-500);
   }
 
@@ -594,7 +625,7 @@ body.dark-mode .toggle-img {
     width: 100%;
   }
 
-  .answer-option-container {
+  .answer-option-button {
     padding: var(--spacing-200);
   }
 
@@ -654,7 +685,7 @@ body.dark-mode .toggle-img {
     gap: var(--spacing-200);
   }
 
-  .subject-option-container {
+  .subject-option-button {
     border-radius: 1.2rem;
     padding: var(--spacing-200);
     gap: var(--spacing-200);
@@ -667,12 +698,12 @@ body.dark-mode .toggle-img {
     margin-bottom: var(--spacing-200);
   }
 
-  .question {
+  .questiont-text {
     font: var(--tp-3-mobile);
     margin-bottom: var(--spacing-300);
   }
 
-  .answer-option-container {
+  .answer-option-button {
     grid-template-columns: auto 1fr 3.2rem;
     gap: var(--spacing-200);
     border-radius: 1.2rem;
@@ -684,7 +715,7 @@ body.dark-mode .toggle-img {
     height: 4rem;
   }
 
-  .answer {
+  .answer-text {
     font-size: 1.6rem;
   }
 
@@ -733,7 +764,7 @@ body.dark-mode .toggle-img {
     height: 2.8rem;
   }
 
-  .score {
+  .score-text {
     font: var(--tp-1-mobile);
     margin-bottom: var(--spacing-200);
   }

@@ -1,200 +1,193 @@
-const headerTitleContainer = document.querySelector(".header-title-container");
-const headerToggle = document.getElementById("header-toggle");
+const headerSubjectContainer = document.querySelector(".header-subject-container");
+const headerSubjectImage = document.querySelector(".header-subject-img");
+const headerSubjectText = document.querySelector(".header-subject-text");
+const headerToggleInput = document.getElementById("header-toggle-input");
 
 const startPage = document.querySelector(".start-page");
-const subjectButtons = document.querySelectorAll(".subject-option-container");
+const subjectButtons = document.querySelectorAll(".subject-option-button");
 
 const questionPage = document.querySelector(".question-page");
 const questionNumber = document.querySelector(".question-number");
-const question = document.querySelector(".question");
+const questionText = document.querySelector(".question-text");
 const progressBar = document.querySelector(".progress-fill");
 const answersContainer = document.querySelector(".answer-options-container");
+const answerButtons = document.querySelectorAll(".answer-option-button");
+const answerTexts = document.querySelectorAll(".answer-text");
 const submitButton = document.querySelector(".submit-button");
 const errorMessage = document.querySelector(".error-message-container");
 
 const scorePage = document.querySelector(".score-page");
-const scoreSubjectTitle = document.querySelector(".score-subject");
-const scoreSubjectIconContainer = document.querySelector(
-  ".score-subject-img-container"
-);
+const scoreSubjectText = document.querySelector(".score-subject-text");
+const scoreSubjectIconContainer = document.querySelector(".score-subject-img-container");
 const scoreSubjectIcon = document.querySelector(".score-subject-img");
-const scoreText = document.querySelector(".score");
+const scoreText = document.querySelector(".score-text");
 const playAgainButton = document.querySelector(".play-again-button");
 
 let quizzesData = [];
-let currentQuiz = {};
+let currentSubject = {};
+let currentQuestion = {};
 let currentQuestionIndex = 0;
-let currentQuestionData = "";
-let options = [];
-let selectedOption = "";
-let selectedOptionText = "";
 let score = 0;
+let selectedAnswer = null;
 let isSubmitted = false;
 
-const initApp = async function () {
+const fetchData = async () => {
   try {
     const response = await fetch("./data.json");
 
-    if (!response.ok) {
-      throw new Error("Failed to load data.");
-    }
+    if (!response.ok) throw new Error("Failed to load data.");
 
     const data = await response.json();
     quizzesData = data.quizzes;
-
-    console.log(quizzesData);
   } catch (error) {
     console.error("Error:", error);
   }
 };
-initApp();
+fetchData();
 
-subjectButtons.forEach((option, index) => {
-  option.addEventListener("click", () => {
-    currentQuiz = quizzesData[index];
-    console.log(currentQuiz);
+const renderQuestion = () => {
+  currentQuestion = currentSubject.questions[currentQuestionIndex];
 
-    updateHeader();
+  const { question, options } = currentQuestion;
+
+  questionNumber.textContent = currentQuestionIndex + 1;
+  questionText.textContent = question;
+
+  answerTexts.forEach((text, index) => (text.textContent = options[index]));
+
+  const progressValue = ((currentQuestionIndex + 1) / currentSubject.questions.length) * 100;
+  progressBar.style.width = `${progressValue}%`;
+};
+
+const nextQuestion = () => {
+  currentQuestionIndex++;
+
+  if (currentQuestionIndex < currentSubject.questions.length) {
+    isSubmitted = false;
+    selectedAnswer = null;
+
+    submitButton.textContent = "Submit Answer";
+    answerButtons.forEach((button) => {
+      button.classList.remove("selected", "correct", "incorrect");
+    });
+
+    answersContainer.classList.remove("disabled");
+
     renderQuestion();
+  } else {
+    questionPage.classList.add("hidden");
+    scorePage.classList.remove("hidden");
+
+    scoreText.textContent = score;
+
+    const subjectKey = currentSubject.title.toLowerCase();
+    scoreSubjectIcon.src = `./images/icon-${subjectKey}.svg`;
+    scoreSubjectIconContainer.className = "score-subject-img-container";
+    scoreSubjectIconContainer.classList.add(`bg-${subjectKey}`);
+    scoreSubjectText.textContent = currentSubject.title;
+  }
+};
+
+subjectButtons.forEach((button) => {
+  button.addEventListener("click", (e) => {
+    const selectedSubject = e.currentTarget.textContent.trim();
+
+    currentSubject = quizzesData.find((quiz) => quiz.title === selectedSubject);
+
+    if (!currentSubject) {
+      console.error("Failed to find subject.");
+      return;
+    }
 
     startPage.classList.add("hidden");
     questionPage.classList.remove("hidden");
+
+    headerSubjectContainer.classList.remove("hidden");
+    const subjectKey = selectedSubject.toLowerCase();
+    headerSubjectImage.src = `./images/icon-${subjectKey}.svg`;
+    headerSubjectImage.className = "header-subject-img";
+    headerSubjectImage.classList.add(`bg-${subjectKey}`);
+    headerSubjectText.textContent = selectedSubject;
+
+    renderQuestion();
   });
 });
 
-const updateHeader = function () {
-  const headerTitle = currentQuiz.title;
-  const headerTitleIcon = currentQuiz.icon;
+answersContainer.addEventListener("click", (e) => {
+  if (isSubmitted) return;
 
-  headerTitleContainer.innerHTML = `
-    <img src="${headerTitleIcon}" class="header-title-img subject-${headerTitle.toLowerCase()}-img" />
-    <p class="header-title">${headerTitle}</p>
-  `;
-};
+  const clickedButton = e.target.closest(".answer-option-button");
 
-const renderQuestion = function () {
-  currentQuestionData = currentQuiz.questions[currentQuestionIndex];
+  if (!clickedButton) return;
 
-  answersContainer.classList.remove("disabled");
+  answerButtons.forEach((btn) => btn.classList.remove("selected"));
 
-  selectedOption = "";
-  selectedOptionText = "";
-  isSubmitted = false;
-  submitButton.textContent = "Submit Answer";
+  clickedButton.classList.add("selected");
 
-  // (Current Question / Total Questions) * 100
-  const progressValue =
-    ((currentQuestionIndex + 1) / currentQuiz.questions.length) * 100;
-  progressBar.style.width = `${progressValue}%`;
+  selectedAnswer = clickedButton.querySelector(".answer-text").textContent.trim();
 
-  questionNumber.textContent = currentQuestionIndex + 1;
-  question.textContent = currentQuestionData.question;
+  errorMessage.classList.remove("show");
+});
 
-  const optionLabels = ["A", "B", "C", "D"];
-
-  answersContainer.innerHTML = "";
-
-  currentQuestionData.options.forEach((option, index) => {
-    const formattedOption = option.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
-    answersContainer.insertAdjacentHTML(
-      "beforeend",
-      `
-      <div class="answer-option-container">
-        <p class="answer-option">${optionLabels[index]}</p>
-        <p class="answer">${formattedOption}</p>
-        <img src="./images/icon-correct.svg" class="status-icon correct-icon" alt="Correct Icon" />
-        <img src="./images/icon-incorrect.svg" class="status-icon incorrect-icon" alt="Incorrect Icon" />
-      </div>
-      `
-    );
-  });
-
-  options = document.querySelectorAll(".answer-option-container");
-
-  options.forEach((option) => {
-    option.addEventListener("click", (e) => {
-      if (isSubmitted) return;
-
-      options.forEach((btn) => btn.classList.remove("active"));
-
-      selectedOption = e.currentTarget;
-      selectedOption.classList.add("active");
-
-      selectedOptionText = selectedOption
-        .querySelector(".answer")
-        .textContent.trim();
-
-      errorMessage.classList.remove("show");
-    });
-  });
-};
-
-submitButton.addEventListener("click", function () {
-  options = document.querySelectorAll(".answer-option-container");
-
+submitButton.addEventListener("click", () => {
   if (!isSubmitted) {
-    if (!selectedOptionText) {
+    if (!selectedAnswer) {
       errorMessage.classList.add("show");
       return;
     }
 
-    if (selectedOptionText === currentQuestionData.answer) {
-      selectedOption.classList.add("correct");
+    errorMessage.classList.remove("show");
+
+    const selectedButton = document.querySelector(".answer-option-button.selected");
+    const { answer } = currentQuestion;
+
+    if (selectedAnswer === answer) {
       score++;
-    }
 
-    if (selectedOptionText !== currentQuestionData.answer) {
-      selectedOption.classList.add("incorrect");
+      selectedButton.classList.add("correct");
+    } else {
+      selectedButton.classList.add("incorrect");
 
-      options.forEach((option) => {
-        const optionContent = option
-          .querySelector(".answer")
-          .textContent.trim();
-        if (optionContent === currentQuestionData.answer) {
-          option.classList.add("correct");
+      answerButtons.forEach((button) => {
+        const currentAnswerText = button.querySelector(".answer-text").textContent.trim();
+        if (currentAnswerText === currentQuestion.answer) {
+          button.classList.add("correct");
         }
       });
     }
-    submitButton.textContent = "Next Question";
-    isSubmitted = true;
 
+    isSubmitted = true;
+    submitButton.textContent = "Next Question";
     answersContainer.classList.add("disabled");
   } else {
-    currentQuestionIndex++;
-    if (currentQuestionIndex < currentQuiz.questions.length) {
-      renderQuestion();
-    } else {
-      questionPage.classList.add("hidden");
-      scorePage.classList.remove("hidden");
-      scoreText.textContent = score;
-
-      scoreSubjectTitle.textContent = currentQuiz.title;
-      scoreSubjectIcon.src = currentQuiz.icon;
-      scoreSubjectIcon.alt = `${currentQuiz.title} icon`;
-      scoreSubjectIconContainer.className = `score-subject-img-container subject-${currentQuiz.title.toLowerCase()}-img`;
-    }
+    nextQuestion();
   }
 });
 
-playAgainButton.addEventListener("click", function () {
-  score = 0;
+playAgainButton.addEventListener("click", () => {
+  currentSubject = {};
+  currentQuestion = {};
   currentQuestionIndex = 0;
+  score = 0;
+  selectedAnswer = null;
   isSubmitted = false;
-  selectedOption = "";
-  selectedOptionText = "";
 
   answersContainer.classList.remove("disabled");
 
-  scorePage.classList.add("hidden");
   startPage.classList.remove("hidden");
   questionPage.classList.add("hidden");
+  scorePage.classList.add("hidden");
 
-  headerTitleContainer.innerHTML = "";
+  headerSubjectContainer.classList.add("hidden");
+  headerSubjectImage.src = "";
+  headerSubjectImage.className = "header-subject-img";
+  headerSubjectText.textContent = "";
 
   progressBar.style.width = "0%";
+
+  submitButton.textContent = "Submit Answer";
+
+  answerButtons.forEach((btn) => btn.classList.remove("selected", "correct", "incorrect"));
 });
 
-headerToggle.addEventListener("change", function () {
-  document.body.classList.toggle("dark-mode");
-});
+headerToggleInput.addEventListener("change", () => document.body.classList.toggle("dark-mode"));

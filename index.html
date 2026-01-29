@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -6,12 +6,7 @@
     <link rel="stylesheet" href="style.css" />
     <script defer src="script.js"></script>
 
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="./images/favicon-32x32.png"
-    />
+    <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -25,27 +20,19 @@
   <body>
     <main class="main-all">
       <header class="header-container">
-        <div class="header-title-container"></div>
+        <div class="header-title-container">
+          <div class="header-subject-container hidden">
+            <img src="" alt="" class="header-subject-img" />
+            <p class="header-subject-text"></p>
+          </div>
+        </div>
         <div class="header-toggle-container">
-          <img
-            class="toggle-img"
-            src="images/icon-sun-dark.svg"
-            alt="Dark Sun Icon"
-          />
+          <img class="toggle-img" src="images/icon-sun-dark.svg" alt="Dark Sun Icon" />
           <label class="toggle-label">
-            <input
-              class="toggle-checkbox"
-              type="checkbox"
-              id="header-toggle"
-              aria-label="Toggle Dark Mode"
-            />
+            <input class="toggle-checkbox" type="checkbox" id="header-toggle-input" aria-label="Toggle Dark Mode" />
             <span class="toggle-slider"></span>
           </label>
-          <img
-            class="toggle-img"
-            src="images/icon-moon-dark.svg"
-            alt="Dark Moon Icon"
-          />
+          <img class="toggle-img" src="images/icon-moon-dark.svg" alt="Dark Moon Icon" />
         </div>
       </header>
       <section class="start-page">
@@ -58,32 +45,29 @@
             <p class="intro-info">Pick a subject to get started</p>
           </div>
           <div class="subject-container">
-            <button class="subject-option-container">
+            <button class="subject-option-button">
               <div class="subject-option-img subject-html-img">
                 <img src="./images/icon-html.svg" alt="HTML icon" />
               </div>
-              <p class="subject-option">HTML</p>
+              <span class="subject-option">HTML</span>
             </button>
-            <button class="subject-option-container">
+            <button class="subject-option-button">
               <div class="subject-option-img subject-css-img">
                 <img src="./images/icon-css.svg" alt="CSS icon" />
               </div>
-              <p class="subject-option">CSS</p>
+              <span class="subject-option">CSS</span>
             </button>
-            <button class="subject-option-container">
+            <button class="subject-option-button">
               <div class="subject-option-img subject-js-img">
-                <img src="./images/icon-js.svg" alt="JavaScript icon" />
+                <img src="./images/icon-javascript.svg" alt="JavaScript icon" />
               </div>
-              <p class="subject-option">JavaScript</p>
+              <span class="subject-option">JavaScript</span>
             </button>
-            <button class="subject-option-container">
+            <button class="subject-option-button">
               <div class="subject-option-img subject-acc-img">
-                <img
-                  src="./images/icon-accessibility.svg"
-                  alt="Accessibility icon"
-                />
+                <img src="./images/icon-accessibility.svg" alt="Accessibility icon" />
               </div>
-              <p class="subject-option">Accessibility</p>
+              <span class="subject-option">Accessibility</span>
             </button>
           </div>
         </section>
@@ -91,12 +75,9 @@
       <section class="question-page hidden">
         <section class="main-container">
           <div class="question-container">
-            <span class="question-number-sentence"
-              >Question <span class="question-number">6</span> of 10</span
-            >
-            <p class="question">
-              Which of these color contrast ratios defines the minimum WCAG 2.1
-              Level AA requirement for normal text?
+            <span class="question-number-sentence">Question <span class="question-number">6</span> of 10</span>
+            <p class="question-text">
+              Which of these color contrast ratios defines the minimum WCAG 2.1 Level AA requirement for normal text?
             </p>
             <div class="progress-container">
               <div class="progress-fill"></div>
@@ -104,73 +85,37 @@
           </div>
           <div class="answer-container">
             <div class="answer-options-container">
-              <div class="answer-option-container">
-                <p class="answer-option">A</p>
-                <p class="answer">4.5 : 1</p>
-                <img
-                  src="./images/icon-correct.svg"
-                  class="status-icon correct-icon"
-                  alt="Correct Icon"
-                />
-                <img
-                  src="./images/icon-incorrect.svg"
-                  class="status-icon incorrect-icon"
-                  alt="Incorrect Icon"
-                />
-              </div>
-              <div class="answer-option-container">
-                <p class="answer-option">B</p>
-                <p class="answer">3 : 1</p>
+              <button class="answer-option-button" data-index="0">
+                <span class="answer-option">A</span>
+                <span class="answer-text">4.5 : 1</span>
+                <img src="./images/icon-correct.svg" class="status-icon correct-icon" alt="Correct Icon" />
+                <img src="./images/icon-incorrect.svg" class="status-icon incorrect-icon" alt="Incorrect Icon" />
+              </button>
+              <button class="answer-option-button" data-index="1">
+                <span class="answer-option">B</span>
+                <span class="answer-text">3 : 1</span>
 
-                <img
-                  src="./images/icon-correct.svg"
-                  class="status-icon correct-icon"
-                  alt="Correct Icon"
-                />
-                <img
-                  src="./images/icon-incorrect.svg"
-                  class="status-icon incorrect-icon"
-                  alt="Incorrect Icon"
-                />
-              </div>
-              <div class="answer-option-container">
-                <p class="answer-option">C</p>
-                <p class="answer">2.5 : 1</p>
+                <img src="./images/icon-correct.svg" class="status-icon correct-icon" alt="Correct Icon" />
+                <img src="./images/icon-incorrect.svg" class="status-icon incorrect-icon" alt="Incorrect Icon" />
+              </button>
+              <button class="answer-option-button" data-index="2">
+                <span class="answer-option">C</span>
+                <span class="answer-text">2.5 : 1</span>
 
-                <img
-                  src="./images/icon-correct.svg"
-                  class="status-icon correct-icon"
-                  alt="Correct Icon"
-                />
-                <img
-                  src="./images/icon-incorrect.svg"
-                  class="status-icon incorrect-icon"
-                  alt="Incorrect Icon"
-                />
-              </div>
-              <div class="answer-option-container">
-                <p class="answer-option">D</p>
-                <p class="answer">5 : 1</p>
+                <img src="./images/icon-correct.svg" class="status-icon correct-icon" alt="Correct Icon" />
+                <img src="./images/icon-incorrect.svg" class="status-icon incorrect-icon" alt="Incorrect Icon" />
+              </button>
+              <button class="answer-option-button" data-index="3">
+                <span class="answer-option">D</span>
+                <span class="answer-text">5 : 1</span>
 
-                <img
-                  src="./images/icon-correct.svg"
-                  class="status-icon correct-icon"
-                  alt="Correct Icon"
-                />
-                <img
-                  src="./images/icon-incorrect.svg"
-                  class="status-icon incorrect-icon"
-                  alt="Incorrect Icon"
-                />
-              </div>
+                <img src="./images/icon-correct.svg" class="status-icon correct-icon" alt="Correct Icon" />
+                <img src="./images/icon-incorrect.svg" class="status-icon incorrect-icon" alt="Incorrect Icon" />
+              </button>
             </div>
             <button type="button" class="submit-button">Submit Answer</button>
             <div class="error-message-container">
-              <img
-                class="error-message-icon"
-                src="./images/icon-error.svg"
-                alt="Error Icon"
-              />
+              <img class="error-message-icon" src="./images/icon-error.svg" alt="Error Icon" />
               <p class="error-message-text">Please select an answer</p>
             </div>
           </div>
@@ -185,16 +130,12 @@
           <div class="score-container">
             <div class="score-card-container">
               <div class="score-subject-container">
-                <p class="score-subject-img-container">
-                  <img
-                    class="score-subject-img"
-                    src="./images/icon-accessibility.svg"
-                    alt="Accessibility icon"
-                  />
-                </p>
-                <p class="score-subject">Accessibility</p>
+                <div class="score-subject-img-container">
+                  <img class="score-subject-img" src="./images/icon-accessibility.svg" alt="Accessibility icon" />
+                </div>
+                <p class="score-subject-text">Accessibility</p>
               </div>
-              <p class="score">8</p>
+              <p class="score-text">8</p>
               <p class="score-total">out of 10</p>
             </div>
             <button type="button" class="play-again-button">Play Again</button>
