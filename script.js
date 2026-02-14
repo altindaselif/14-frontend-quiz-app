@@ -39,6 +39,8 @@ const fetchData = async () => {
 
     const data = await response.json();
     quizzesData = data.quizzes;
+
+    subjectButtons.forEach((btn) => btn.removeAttribute("disabled"));
   } catch (error) {
     console.error("Error:", error);
   }
@@ -90,7 +92,7 @@ const nextQuestion = () => {
 
 subjectButtons.forEach((button) => {
   button.addEventListener("click", (e) => {
-    const selectedSubject = e.currentTarget.textContent.trim();
+    const selectedSubject = e.currentTarget.querySelector(".subject-option").textContent.trim();
 
     currentSubject = quizzesData.find((quiz) => quiz.title === selectedSubject);
 

@@ -233,7 +233,6 @@ button {
 .subject-option-img {
   width: 5.6rem;
   height: 5.6rem;
-
   border-radius: 0.8rem;
 
   display: flex;
@@ -255,6 +254,11 @@ button {
 
 .subject-accessibility-img {
   background-color: var(--purple-100);
+}
+
+.subject-option-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 .subject-option-button:hover {
